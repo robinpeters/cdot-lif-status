@@ -6,7 +6,7 @@
 # Program Name  : lifstat.pl
 # Version       : 1.1.0
 #
-#------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------#
 use strict;
 use Socket;
 use Getopt::Long qw(:config no_ignore_case no_auto_abbrev bundling);
@@ -14,7 +14,7 @@ use lib "./lib/NetApp";
 use Math::Round qw(:all);
 use NaServer;
 use NaElement;
-#------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------#
 my $interval = 2;
 my ($cluster, $node, $optuser, $optpasswd, $vserver, $help, $version);
 GetOptions("c|cluster=s"    => \$cluster,
@@ -26,7 +26,7 @@ GetOptions("c|cluster=s"    => \$cluster,
            "h|help"         => \$help,
            "V|version"      => \$version)
     or die("Error In Command Line Arguments!\n", help());
-#------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------#
 sub help {
     print "Usage :: \n";
     print "  -c|--cluster : Cluster Name to get Logical Interface Status. \n";
@@ -56,13 +56,16 @@ if ($help eq '1'){
 } elsif ($version eq '1'){
     print "lifstat 1.1.0 : Tue Jun 13 11:08:24 PDT 2017 \n";
     exit 0;
-} elsif ($cluster) {
+} elsif ($cluster and $optuser and $optpasswd){
     lifstatloop($cluster);
     #getversions($cluster) #Only for Testing
 } else {
+    if (!$cluster)    {print "Option c required \n"}
+    if (!$optuser)    {print "Option u required \n"}
+    if (!$optpasswd)  {print "Option p required \n"}
     help();
 }
-#------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------#
 sub connect_netapp {
     my $host    = shift;
     my $ncs     = NaServer->new ($host, 1, 3);
@@ -93,7 +96,7 @@ sub connect_netapp {
     }
     return $ncs;
 }
-#------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------#
 # Just for testing HTTP/HTTPS Connection
 sub getversions {
     my $cluster = shift;
@@ -101,7 +104,7 @@ sub getversions {
     my $out     = $ss->invoke( "system-get-version");
     print $out->sprintf();
 }
-#------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------#
 sub lifstatloop {
     my $cluster = shift;
     my (%lifdataA, %lifdataB);
@@ -141,7 +144,7 @@ sub lifstatloop {
         }
     }
 }
-#------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------#
 sub getliflist {
     my $cluster = shift;
 	my $api = new NaElement('perf-object-instance-list-info-iter');
@@ -166,7 +169,7 @@ sub getliflist {
 	}
     return %liflist;
 }
-#------------------------------------------------------------------# 
+#-------------------------------------------------------------------------------------#
 sub getlifstat{
     my $cluster = shift;
     my %liflist = getliflist($cluster);
@@ -223,5 +226,5 @@ sub getlifstat{
 	}
     return %lifdata;
 }
-#------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------#
 # EOF
