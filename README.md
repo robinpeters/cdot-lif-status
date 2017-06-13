@@ -36,7 +36,7 @@
 ## Installation:
 ```
 $ git clone https://github.com/robinpeters/cdot-lif-status.git
-$ cd Red8-Realize/
+$ cd cdot-lif-status/
 ```
 
 ## Usage:
