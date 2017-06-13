@@ -15,7 +15,8 @@
         Perl Modules from CPAN: 
             Getopt::Long qw(:config no_ignore_case no_auto_abbrev bundling);
             use Math::Round qw(:all);
-        Perl Modules from NMSDK:
+
+        Perl Modules from NMSDK: (Exact copy of all perl modules from NMSDK)
         $ ls  lib/NetApp/
             DfmErrno.pm     
             NaErrno.pm
