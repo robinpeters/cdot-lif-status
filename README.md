@@ -1,4 +1,4 @@
-# cdot-lif-status
+# lif-status
 
     Command line tool to display the Clustered Ontap logical interface status to know which interface/physical-port is overloaded.
 
